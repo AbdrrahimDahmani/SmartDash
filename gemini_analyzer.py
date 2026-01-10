@@ -1,7 +1,7 @@
 """
-Module d'intégration Gemini AI - Analyse intelligente et aide à la décision
+Module d'intégration Gemini AI via OpenRouter - Analyse intelligente et aide à la décision
 """
-import google.generativeai as genai
+import requests
 from config import GEMINI_API_KEY, SEUILS_ALERTE
 import pandas as pd
 import json
@@ -9,25 +9,61 @@ import json
 
 class GeminiAnalyzer:
     """
-    Classe pour l'analyse intelligente des données avec Gemini AI
+    Classe pour l'analyse intelligente des données avec Gemini AI via OpenRouter
     """
     
     def __init__(self, api_key: str = None):
         """
-        Initialise le client Gemini
+        Initialise le client OpenRouter
         """
         self.api_key = api_key or GEMINI_API_KEY
-        self.model = None
         self.is_configured = False
+        self.model_name = "google/gemini-2.0-flash-lite-001"
+        self.api_url = "https://openrouter.ai/api/v1/chat/completions"
         
         if self.api_key and self.api_key != "votre_cle_api_gemini_ici":
-            try:
-                genai.configure(api_key=self.api_key)
-                # Utiliser gemini-2.0-flash (modèle gratuit et rapide)
-                self.model = genai.GenerativeModel('gemini-2.0-flash')
-                self.is_configured = True
-            except Exception as e:
-                print(f"Erreur de configuration Gemini: {e}")
+            self.is_configured = True
+
+    def _call_openrouter(self, prompt: str) -> str:
+        """Helper method to call OpenRouter API"""
+        if not self.is_configured:
+            return "API non configurée"
+
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+            "HTTP-Referer": "http://localhost:8501", # Localhost for Streamlit
+            "X-Title": "PilotIA Dashboard",
+        }
+        
+        data = {
+            "model": self.model_name,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        }
+        
+        try:
+            response = requests.post(
+                url=self.api_url,
+                headers=headers,
+                data=json.dumps(data)
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                if 'choices' in result and len(result['choices']) > 0:
+                    return result['choices'][0]['message']['content']
+                else:
+                    return f"Erreur: Réponse vide de l'API ({result})"
+            else:
+                return f"Erreur API ({response.status_code}): {response.text}"
+                
+        except Exception as e:
+            return f"Erreur de connexion OpenRouter: {str(e)}"
     
     def analyser_performance_globale(self, df_financier: pd.DataFrame, df_kpis: pd.DataFrame = None) -> str:
         """
@@ -55,11 +91,7 @@ Fournis une analyse comprenant:
 
 Réponds en français, de manière professionnelle et concise."""
 
-        try:
-            response = self.model.generate_content(prompt)
-            return response.text
-        except Exception as e:
-            return f"Erreur lors de l'analyse IA: {str(e)}\n\n" + self._analyse_sans_ia(df_financier, df_kpis)
+        return self._call_openrouter(prompt) or self._analyse_sans_ia(df_financier, df_kpis)
     
     def detecter_anomalies_ia(self, df: pd.DataFrame, colonnes_a_analyser: list = None) -> str:
         """
@@ -97,11 +129,7 @@ Pour chaque anomalie, indique:
 
 Réponds en français de manière structurée."""
 
-        try:
-            response = self.model.generate_content(prompt)
-            return response.text
-        except Exception as e:
-            return f"Erreur: {str(e)}\n\n" + self._detection_anomalies_basique(df, colonnes_a_analyser)
+        return self._call_openrouter(prompt) or self._detection_anomalies_basique(df, colonnes_a_analyser)
     
     def generer_recommandations_strategiques(self, contexte_entreprise: dict) -> str:
         """
@@ -125,11 +153,7 @@ Fournis:
 
 Réponds en français de manière opérationnelle et actionnable."""
 
-        try:
-            response = self.model.generate_content(prompt)
-            return response.text
-        except Exception as e:
-            return f"Erreur: {str(e)}\n\n" + self._recommandations_generiques()
+        return self._call_openrouter(prompt) or self._recommandations_generiques()
     
     def analyser_ecarts_budgetaires(self, df_budget: pd.DataFrame) -> str:
         """
@@ -154,11 +178,7 @@ Fournis:
 
 Réponds en français de manière précise et opérationnelle."""
 
-        try:
-            response = self.model.generate_content(prompt)
-            return response.text
-        except Exception as e:
-            return f"Erreur: {str(e)}\n\n" + self._analyse_ecarts_basique(df_budget)
+        return self._call_openrouter(prompt) or self._analyse_ecarts_basique(df_budget)
     
     def prevoir_tendances(self, df: pd.DataFrame, colonne_cible: str, horizon: int = 3) -> str:
         """
@@ -193,18 +213,14 @@ Fournis:
 
 Réponds en français avec des chiffres précis."""
 
-        try:
-            response = self.model.generate_content(prompt)
-            return response.text
-        except Exception as e:
-            return f"Erreur: {str(e)}\n\n" + self._prevision_basique(df, colonne_cible, horizon)
+        return self._call_openrouter(prompt) or self._prevision_basique(df, colonne_cible, horizon)
     
     def chat_controleur_gestion(self, question: str, contexte_donnees: str = "") -> str:
         """
         Chat interactif avec un assistant IA spécialisé en contrôle de gestion
         """
         if not self.is_configured:
-            return "L'API Gemini n'est pas configurée. Veuillez ajouter votre clé API dans le fichier .env"
+            return "L'API IA n'est pas configurée. Veuillez ajouter votre clé API OpenRouter."
         
         prompt = f"""Tu es un assistant expert en contrôle de gestion, finance d'entreprise et pilotage de la performance.
 Tu aides les managers et dirigeants à prendre des décisions éclairées basées sur les données.
@@ -218,11 +234,7 @@ Réponds de manière professionnelle, précise et actionnable.
 Si tu ne peux pas répondre avec certitude, indique-le clairement.
 Réponds en français."""
 
-        try:
-            response = self.model.generate_content(prompt)
-            return response.text
-        except Exception as e:
-            return f"Erreur lors de la génération de la réponse: {str(e)}"
+        return self._call_openrouter(prompt)
     
     # Méthodes de fallback (sans IA)
     def _analyse_sans_ia(self, df_financier: pd.DataFrame, df_kpis: pd.DataFrame = None) -> str:

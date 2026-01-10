@@ -263,7 +263,7 @@ _Dashboard principal avec KPIs, alertes et graphiques d'évolution_
 
 ### Analyse des Coûts
 
-![Analyse des coûts](screenshots/02_analyse_couts.png)
+![alt text](images/image-1.png)
 
 _Répartition des coûts par catégorie et écarts budgétaires_
 
@@ -271,7 +271,7 @@ _Répartition des coûts par catégorie et écarts budgétaires_
 
 ### Centres de Responsabilité
 
-![Centres de responsabilité](screenshots/03_centres_responsabilite.png)
+![alt text](images/image-2.png)
 
 _Suivi Budget vs Réalisé et productivité par centre_
 
@@ -279,7 +279,7 @@ _Suivi Budget vs Réalisé et productivité par centre_
 
 ### KPIs Opérationnels
 
-![KPIs opérationnels](screenshots/04_kpis_operationnels.png)
+![alt text](images/image-3.png)
 
 _Jauges de satisfaction/service et évolution des indicateurs_
 
@@ -287,7 +287,11 @@ _Jauges de satisfaction/service et évolution des indicateurs_
 
 ### Effet de Levier
 
-![Effet de levier](screenshots/05_effet_levier.png)
+![alt text](images/image-4.png)
+
+![alt text](images/image-5.png)
+
+![alt text](images/image-6.png)
 
 _Analyse du levier financier : ROA, ROE, structure financière_
 
@@ -295,7 +299,9 @@ _Analyse du levier financier : ROA, ROE, structure financière_
 
 ### Détection d'Anomalies
 
-![Détection d'anomalies](screenshots/06_detection_anomalies.png)
+![alt text](images/image-7.png)
+
+![alt text](images/image-8.png)
 
 _Outliers statistiques et analyse IA des anomalies_
 
@@ -303,7 +309,17 @@ _Outliers statistiques et analyse IA des anomalies_
 
 ### Aide à la Décision IA
 
-![Aide à la décision](screenshots/07_aide_decision_ia.png)
+![alt text](images/image-9.png)
+
+![alt text](images/image-10.png)
+
+![alt text](images/image-11.png)
+
+![alt text](images/image-12.png)
+
+![alt text](images/image-13.png)
+
+![alt text](images/image-14.png)
 
 _Chat interactif et recommandations stratégiques_
 
@@ -610,17 +626,3 @@ L'application fonctionne également sans clé API :
 - Détection d'anomalies algorithmique
 - Alertes sur seuils
 - Tous les graphiques et tableaux
-
----
-
-## Auteur
-
-**Projet AMIFI 2025-2026**
-
-Pilotage de la Performance avec Intelligence Artificielle
-
----
-
-## Licence
-
-Projet académique - Usage éducatif uniquement
