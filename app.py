@@ -1094,7 +1094,7 @@ def main():
         """
         <div style="text-align: center; color: #888; padding: 1rem;">
             <p>Projet AMIFI - Pilotage de la Performance avec Intelligence Artificielle</p>
-            <p>Développé avec Streamlit & Gemini AI | 2025-2026</p>
+
         </div>
         """,
         unsafe_allow_html=True

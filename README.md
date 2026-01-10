@@ -255,7 +255,7 @@ Assistant IA spécialisé en contrôle de gestion :
 
 ### Vue d'Ensemble
 
-![Vue d'ensemble](screenshots/01_vue_ensemble.png)
+![alt text](images/image.png)
 
 _Dashboard principal avec KPIs, alertes et graphiques d'évolution_
 
