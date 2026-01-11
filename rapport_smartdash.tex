@@ -1,0 +1,344 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{subcaption}
+
+% Configuration des marges
+\geometry{
+    left=2.5cm,
+    right=2.5cm,
+    top=3cm,
+    bottom=3cm
+}
+
+% Configuration des hyperliens
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Rapport SmartDash},
+}
+
+% Configuration des listings pour le code
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegray},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+% En-tête et pied de page
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{ENSET Mohammedia}
+\rhead{Dépt. Mathématiques et Informatique}
+\rfoot{Page \thepage}
+
+\begin{document}
+
+% Page de garde
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    {\LARGE \textbf{ENSET Mohammedia}}\\[0.5cm]
+    {\Large Département Mathématiques et Informatique}\\[2cm]
+    
+    \includegraphics[width=0.4\textwidth]{images/image.png} \\[2cm] % Utilisation du dashboard comme logo/image principale
+    
+    {\Huge \textbf{SmartDash}}\\[0.5cm]
+    {\Large Tableau de Bord Intelligent de Pilotage de la Performance}\\[0.5cm]
+    {\large \textit{Orientation : Contrôle de Gestion \& Aide à la Décision}}\\[2cm]
+    
+    \textbf{Réalisé par :}\\[0.5cm]
+    \begin{tabular}{ll}
+        Ibtissam BENABID & (CCN3) \\
+        Abderahim DAHMANI & (CCN3) \\
+        Mohamed BADRI & (BDCC3)
+    \end{tabular}
+    \\[2cm]
+    
+    \textbf{Encadré par :}\\[0.5cm]
+    M. AMIFI\\[2cm]
+    
+    \today
+    
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Introduction et Contexte}
+
+Dans le cadre du module de Contrôle de Gestion et Aide à la Décision, nous présentons \textbf{SmartDash}, une solution innovante de pilotage de la performance organisationnelle. Ce projet répond à la nécessité croissante pour les entreprises de manipuler des volumes de données importants pour prendre des décisions rapides et éclairées.
+
+La problématique adressée est la suivante :
+\begin{quote}
+    \textit{« Comment exploiter et améliorer le système d'information pour aider les décideurs dans le pilotage de la performance organisationnelle ? »}
+\end{quote}
+
+Ce rapport détaille les fonctionnalités techniques et fonctionnelles de l'application, en mettant en lumière l'apport de l'Intelligence Artificielle (Google Gemini AI) dans l'analyse financière moderne.
+
+\section{Architecture Technique et Structure}
+
+\subsection{Architecture Globale}
+L'application est construite sur une architecture modulaire utilisant Python et Streamlit, favorisant une séparation claire entre l'interface, la logique métier et les données.
+
+\begin{lstlisting}[language=bash, caption=Structure détaillée du projet]
+projet/
+|-- app.py                    # Interface Utilisateur Streamlit
+|-- config.py                 # Configuration des seuils (KPIs, alertes)
+|-- data_manager.py           # Gestion des données (ETL, génération)
+|-- gemini_analyzer.py        # Module IA (Integration Google Gemini)
+|-- anomaly_detector.py       # Algorithmes de détection (Statistiques/ML)
+|-- images/                   # Dossier contenant toutes les captures
+`-- README.md                 # Documentation technique
+\end{lstlisting}
+
+\section{Analyse Fonctionnelle Détaillée}
+
+\subsection{1. Vue d'Ensemble (Dashboard Principal)}
+
+La figure \ref{fig:dashboard} ci-dessous représente le point d'entrée de l'application. Ce tableau de bord synthétique est conçu pour offrir une vision immédiate de la santé financière de l'entreprise.
+
+\textbf{Fonctionnalités et Explications :}
+\begin{itemize}
+    \item \textbf{Indicateurs Clés de Performance (KPIs)} : En haut de page, nous retrouvons les métriques essentielles : le Chiffre d'Affaires (520 k€), la Marge Brute (55,0\%) et le Résultat d'Exploitation (25,2\%). Chaque indicateur est accompagné de sa variation par rapport à la période précédente (ex: +4,0\% pour le CA), permettant d'identifier instantanément la dynamique de croissance.
+    \item \textbf{Score de Santé} : Un indicateur composite (ici 82/100) agrège l'ensemble des performances pour donner une note unique, facilitant la communication avec la direction générale.
+    \item \textbf{Graphique d'Évolution} : La courbe bleue met en perspective l'évolution historique du CA, permettant de repérer les saisonnalités ou les tendances de fond.
+    \item \textbf{Alertes} : Un bandeau latéral (non visible ici mais intégré au système) notifie l'utilisateur des seuils critiques atteints.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/image.png}
+    \caption{Tableau de bord principal : Suivi du CA, Marges et Score de Santé}
+    \label{fig:dashboard}
+\end{figure}
+
+\subsection{2. Analyse Approfondie des Coûts}
+
+La maîtrise des coûts est le levier principal de la rentabilité opérationnelle. La figure \ref{fig:couts} illustre le module dédié à l'analyse analytique des charges.
+
+\textbf{Fonctionnalités et Explications :}
+\begin{itemize}
+    \item \textbf{Répartition Catégorielle} : Le diagramme circulaire (à gauche) offre une vision structurelle des dépenses. On observe ici que les "Matières premières" et la "Main d'œuvre directe" constituent la majorité des coûts, ce qui est typique d'une activité industrielle.
+    \item \textbf{Analyse des Écarts Budgétaires} : Le graphique en barres (à droite) est un outil de pilotage crucial. Il compare le budget alloué aux dépenses réelles.
+    \item \textbf{Interprétation Visuelle} : Le code couleur est intuitif : les barres vertes signalent des économies (ex: Frais Commerciaux, -4000 €), tandis que les barres rouges alertent sur des dérapages (ex: Matières premières qui dépassent le budget de 4,2\%). Cela permet au contrôleur de gestion de focaliser son attention uniquement sur les anomalies (Management by Exception).
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/image-1.png}
+    \caption{Ventilation des coûts par catégorie et analyse des écarts}
+    \label{fig:couts}
+\end{figure}
+
+\subsection{3. Pilotage par Centres de Responsabilité}
+
+Pour responsabiliser les managers, l'outil permet une descente analytique par département, comme le montre la figure \ref{fig:centres}.
+
+\textbf{Fonctionnalités et Explications :}
+\begin{itemize}
+    \item \textbf{Suivi Budgétaire Décentralisé} : Le graphique du haut compare les montants Budget vs Réalisé pour chaque centre (Administratif, Commercial, Production, etc.). On remarque ici que le centre "Production" est le plus gros consommateur de ressources, avec un léger dépassement visible.
+    \item \textbf{Analyse de la Productivité} : Le graphique du bas introduit une mesure d'efficience : la productivité par centre. La ligne pointillée représente l'objectif (100\%). On constate que les centres "Commercial" et "R\&D" surperforment (au-dessus de la ligne), tandis que la "Production" est légèrement en retrait, ce qui pourrait déclencher une action corrective (formation, révision des processus).
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/image-2.png}
+    \caption{Comparaison Budget vs Réalisé et Productivité par centre}
+    \label{fig:centres}
+\end{figure}
+
+\subsection{4. KPIs Opérationnels}
+
+La performance financière n'est que la résultante de la performance opérationnelle. Ce module (figure \ref{fig:ops}) connecte la finance aux opérations.
+
+\textbf{Fonctionnalités et Explications :}
+\begin{itemize}
+    \item \textbf{Jauges de Performance} : Deux indicateurs critiques sont suivis sous forme de jauges : la "Satisfaction Client" (7.2/10) et le "Taux de Service" (94.5\%). Ces indicateurs qualitatifs sont essentiels pour anticiper le chiffre d'affaires futur.
+    \item \textbf{Matrice de l'Exploitation} : Les quatre graphiques inférieurs croisent différentes métriques : Taux d'occupation des machines, Délais de livraison, Rotation des stocks et Taux de rebut.
+    \item \textbf{Lecture Croisée} : Par exemple, une augmentation du "Taux de rebut" (en bas à droite) pourrait expliquer la baisse de productivité vue précédemment dans le centre de Production. C'est cette vision systémique que permet SmartDash.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/image-3.png}
+    \caption{Suivi des KPIs opérationnels (Qualité, Délais, Satisfaction)}
+    \label{fig:ops}
+\end{figure}
+
+\subsection{5. Analyse des Leviers Financiers et Opérationnels}
+
+Cette section est destinée à la direction financière pour optimiser la structure du capital.
+
+\textbf{Figure \ref{fig:levier1} - Structure du Capital :}
+Le graphique "Structure Financière" montre la répartition entre Capitaux Propres et Dettes. Ici, l'entreprise est majoritairement financée par des fonds propres, ce qui sécurise son bilan mais limite potentiellement son effet de levier.
+
+\textbf{Figure \ref{fig:levier2} - Décomposition des Leviers :}
+Ce tableau décompose les mécanismes de création de valeur. Il calcule le "Levier Financier" (impact de la dette sur la rentabilité des fonds propres) et le "Levier Opérationnel" (sensibilité du résultat au volume d'affaires). L'indicateur "Bras de Levier" mesure l'intensité de l'endettement.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{images/image-4.png}
+        \caption{Répartition Capitaux Propres / Dettes}
+        \label{fig:levier1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{images/image-5.png}
+        \caption{Tableau des indicateurs de levier}
+        \label{fig:levier2}
+    \end{subfigure}
+    \caption{Analyse de la structure financière}
+\end{figure}
+
+\textbf{Figure \ref{fig:roa_roe} - Rentabilité :}
+Ce graphique est fondamental. Il compare le ROA (Rentabilité Économique - barre bleue) au ROE (Rentabilité Financière - barre verte).
+\textbf{Interprétation} : Ici, le ROE est supérieur au ROA, et le ROA est supérieur au coût de la dette (barre rouge). Cela signifie que l'effet de levier est positif : s'endetter enrichit l'actionnaire car l'argent emprunté rapporte plus qu'il ne coûte.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/image-6.png}
+    \caption{Visualisation ROA vs ROE et Coût de la dette}
+    \label{fig:roa_roe}
+\end{figure}
+
+\subsection{6. Détection Intelligente d'Anomalies}
+
+SmartDash utilise des algorithmes pour sécuriser les données financières et détecter les fraudes ou erreurs.
+
+\textbf{Figure \ref{fig:outliers} - Détection Statistique :}
+Le graphique montre la distribution des montants de transactions. Les points rouges ("Outliers") sont des valeurs qui s'écartent statistiquement de la moyenne (utilisant la méthode IQR ou Z-Score).
+\textbf{Utilité} : Cela permet d'identifier immédiatement une dépense exceptionnelle anormale qui nécessiterait une justification comptable.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/image-7.png}
+    \caption{Détection graphique des outliers (points rouges)}
+    \label{fig:outliers}
+\end{figure}
+
+\textbf{Figure \ref{fig:anom_table} - Rapports d'Alertes :}
+Ce tableau liste les anomalies détectées par l'IA ou les règles métier. Chaque ligne précise le type d'anomalie (ex: "Flux de trésorerie anormal"), sa sévérité (Moyenne/Élevée) et la méthode de détection utilisée (Isolation Forest). C'est un outil de conformité et d'audit interne puissant.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/image-8.png}
+    \caption{Journal des anomalies détectées par l'IA}
+    \label{fig:anom_table}
+\end{figure}
+
+\section{Apport de l'Intelligence Artificielle (Gemini AI)}
+
+L'intégration de l'API Google Gemini propulse le contrôle de gestion dans l'ère cognitive.
+
+\subsection{Assistant Conversationnel}
+
+La figure \ref{fig:chat} montre l'interface de chat ("AI Assistant").
+\textbf{Fonctionnalité} : L'utilisateur pose une question en langage naturel ("Quels sont les risques actuels ?").
+\textbf{Explication} : Le modèle analyse toutes les données chargées (CSV, Excel) et formule une réponse structurée. Cela démocratise l'accès à l'analyse financière pour des non-experts.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/image-9.png}
+    \caption{Interface de dialogue avec l'Assistant IA}
+    \label{fig:chat}
+\end{figure}
+
+\subsection{Analyses et Recommandations Génératives}
+
+Les figures suivantes illustrent la capacité de rédaction et de synthèse de l'IA.
+
+\textbf{Figure \ref{fig:analyse_ia} - Analyse Globales :}
+L'IA rédige une synthèse automatique de la situation. Elle identifie seule les "Points Forts" (ex: Bonne marge) et les "Points de Vigilance" (ex: Dette élevée). C'est un gain de temps considérable pour la rédaction des rapports mensuels.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/image-10.png}
+    \caption{Synthèse textuelle générée automatiquement}
+    \label{fig:analyse_ia}
+\end{figure}
+
+\textbf{Figure \ref{fig:reco} - Recommandations Stratégiques :}
+Sur la base du diagnostic, l'IA propose un plan d'action.
+\textbf{Exemple visible} : L'IA suggère d'optimiser les coûts de production et de revoir la politique de pricing. Elle structure la réponse en actions à court terme et moyen terme.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/image-11.png}
+    \caption{Plan d'action et recommandations stratégiques}
+    \label{fig:reco}
+\end{figure}
+
+\textbf{Figure \ref{fig:diag_prev} - Diagnostics et Prévisions :}
+\begin{itemize}
+    \item À gauche (\ref{fig:swot}), l'IA génère une matrice SWOT (Forces, Faiblesses, Opportunités, Menaces) en temps réel basée sur les dernières données.
+    \item À droite (\ref{fig:prev}), le module de prévision simule des scénarios futurs (Optimiste, Réaliste, Pessimiste), aidant à la construction budgétaire.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{images/image-12.png}
+        \caption{Matrice SWOT générée par IA}
+        \label{fig:swot}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{images/image-13.png}
+        \caption{Scénarios prévisionnels}
+        \label{fig:prev}
+    \end{subfigure}
+    \caption{Outils d'aide à la décision stratégique}
+    \label{fig:diag_prev}
+\end{figure}
+
+\textbf{Figure \ref{fig:synthese_fin} - Conclusion de l'Assistant :}
+Cette dernière capture montre la capacité de l'IA à résumer des échanges complexes ou de vastes ensembles de données en quelques "Insights" actionnables, clôturant le cycle de décision.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/image-14.png}
+    \caption{Insights finaux générés par Gemini}
+    \label{fig:synthese_fin}
+\end{figure}
+
+\section{Conclusion}
+
+Le projet \textbf{SmartDash} démontre la faisabilité et la pertinence de l'intégration des technologies modernes (Cloud, AI, Big Data) dans le métier du contrôle de gestion. Il permet non seulement d'automatiser la production de rapports (gain de temps), mais surtout d'enrichir l'analyse (gain de valeur) grâce à la détection d'anomalies et aux capacités prédictives de l'intelligence artificielle.
+
+Il constitue un outil complet pour le pilotage de la performance, adapté aux besoins pédagogiques de l'ENSET Mohammedia et aux exigences professionnelles actuelles.
+
+\end{document}
